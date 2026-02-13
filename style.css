@@ -247,7 +247,7 @@ h4 {
     border: none;
     border-radius: 18px;
     font-size: clamp(1.3rem, 4vw, 1.6rem);
-    font-weight: 900;
+    font-weight: 700;
     padding: clamp(14px, 3vw, 18px) clamp(32px, 8vw, 46px);
     cursor: pointer;
     box-shadow: 0 6px 18px rgba(176, 122, 74, 0.45);
@@ -278,7 +278,7 @@ h4 {
 }
 
 #yes-btn:active {
-    transform: scale(0.97);
+    transform: scale(0.90);
 }
 
 /* NO button */
