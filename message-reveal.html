@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Unlock Love Notes 💌</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Pacifico&family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #F5EFE6;
+            font-family: 'Nunito', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            background-image:
+                radial-gradient(circle at 15% 85%, #E8D8C4 0%, transparent 40%),
+                radial-gradient(circle at 85% 15%, #D6C1A3 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, #FFF8F1 0%, transparent 60%);
+        }
+
+        /* Animated background hearts */
+        .hearts-bg {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .hearts-bg::before,
+        .hearts-bg::after {
+            content: '🤎 🤍 🤎 🤍 🤎';
+            position: absolute;
+            font-size: clamp(1rem, 3vw, 1.4rem);
+            opacity: 0.12;
+            animation: floatHearts 14s linear infinite;
+            white-space: nowrap;
+            top: 100%;
+            left: 12%;
+        }
+
+        .hearts-bg::after {
+            animation-delay: 7s;
+            left: 65%;
+            content: '🤍 🤎 🤍 🤎 🤍';
+        }
+
+        @keyframes floatHearts {
+            from { transform: translateY(0); opacity: 0.12; }
+            to { transform: translateY(-110vh); opacity: 0; }
+        }
+
+        .container {
+            max-width: 900px;
+            width: 90%;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .header h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: clamp(2rem, 6vw, 3rem);
+            color: #8B5E3C;
+            text-shadow: 2px 2px 4px rgba(139, 94, 60, 0.2);
+            margin-bottom: 15px;
+        }
+
+        .header p {
+            color: #6F4427;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            font-weight: 700;
+        }
+
+        /* Lock mechanism section */
+        .lock-section {
+            background: rgba(255, 248, 241, 0.9);
+            border-radius: 24px;
+            padding: clamp(25px, 5vw, 40px);
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(139, 94, 60, 0.2);
+            border: 3px solid rgba(200, 155, 109, 0.3);
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .lock-display {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .lock-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            animation: lockShake 2s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(139, 94, 60, 0.3));
+        }
+
+        @keyframes lockShake {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        .lock-text {
+            color: #8B5E3C;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .lock-hint {
+            color: #A47148;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            font-style: italic;
+            font-weight: 700;
+        }
+
+        /* Puzzle options */
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .puzzle-option {
+            background: linear-gradient(135deg, #FFF8F1, #F5EFE6);
+            border: 3px solid transparent;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(139, 94, 60, 0.15);
+        }
+
+        .puzzle-option:hover {
+            background: linear-gradient(135deg, #FFE5D0, #FFD9B3);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 18px rgba(139, 94, 60, 0.25);
+        }
+
+        .puzzle-option.selected {
+            border-color: #C89B6D;
+            background: linear-gradient(135deg, #FFE5D0, #FFD9B3);
+            box-shadow: 0 0 20px rgba(200, 155, 109, 0.5);
+        }
+
+        .puzzle-option.correct {
+            border-color: #8B5E3C;
+            background: linear-gradient(135deg, #C89B6D, #B07A4A);
+            animation: correctPulse 0.6s ease;
+        }
+
+        .puzzle-option.correct .puzzle-text {
+            color: white;
+        }
+
+        .puzzle-option.wrong {
+            border-color: #A47148;
+            background: linear-gradient(135deg, #D6C1A3, #C8B097);
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .puzzle-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 2px 4px rgba(139, 94, 60, 0.2));
+        }
+
+        .puzzle-text {
+            color: #8B5E3C;
+            font-weight: 800;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        /* Progress indicator */
+        .progress-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .progress-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: rgba(139, 94, 60, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .progress-dot.completed {
+            background: #C89B6D;
+            box-shadow: 0 0 15px rgba(200, 155, 109, 0.6);
+        }
+
+        /* Messages wall */
+        .messages-wall {
+            display: none;
+            animation: fadeIn 1s ease;
+        }
+
+        .messages-wall.unlocked {
+            display: block;
+        }
+
+        .messages-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .messages-header h2 {
+            font-family: 'Pacifico', cursive;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            color: #8B5E3C;
+            text-shadow: 2px 2px 4px rgba(139, 94, 60, 0.2);
+            margin-bottom: 15px;
+        }
+
+        .unlock-celebration {
+            font-size: 3rem;
+            animation: celebrate 1s ease infinite;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1) rotate(-5deg); }
+            50% { transform: scale(1.2) rotate(5deg); }
+        }
+
+        /* Letter envelopes - Matching theme */
+        .letters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .letter-envelope {
+            background: #FFF8F1;
+            border-radius: 16px;
+            padding: 0;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 24px rgba(139, 94, 60, 0.2);
+            overflow: hidden;
+            min-height: 300px;
+            border: 2px solid rgba(200, 155, 109, 0.3);
+        }
+
+        .letter-envelope:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(139, 94, 60, 0.3);
+        }
+
+        .envelope-flap {
+            background: linear-gradient(135deg, #C89B6D, #B07A4A);
+            height: 80px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            clip-path: polygon(0 0, 100% 0, 100% 60%, 50% 100%, 0 60%);
+            transition: all 0.4s ease;
+        }
+
+        .letter-envelope.opened .envelope-flap {
+            clip-path: polygon(0 0, 100% 0, 100% 0%, 50% 40%, 0 0%);
+            height: 50px;
+        }
+
+        .envelope-icon {
+            font-size: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .letter-envelope.opened .envelope-icon {
+            transform: scale(0);
+        }
+
+        .letter-content {
+            padding: 30px 25px;
+            max-height: 0;
+            opacity: 0;
+            transition: all 0.5s ease;
+            overflow: hidden;
+        }
+
+        .letter-envelope.opened .letter-content {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        .letter-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #C89B6D, #B07A4A);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .letter-title {
+            font-family: 'Caveat', cursive;
+            font-size: 1.5rem;
+            color: #8B5E3C;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .letter-text {
+            color: #6F4427;
+            line-height: 1.7;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .letter-signature {
+            margin-top: 20px;
+            text-align: right;
+            font-family: 'Caveat', cursive;
+            font-size: 1.3rem;
+            color: #8B5E3C;
+        }
+
+        /* Tap to read indicator */
+        .tap-indicator {
+            text-align: center;
+            padding: 15px;
+            color: #8B5E3C;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .letter-envelope.opened .tap-indicator {
+            display: none;
+        }
+
+        /* Back button */
+        .back-btn {
+            display: block;
+            margin: 40px auto 0;
+            background: linear-gradient(135deg, #C89B6D, #B07A4A);
+            border: none;
+            color: #fffaf5;
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 18px rgba(176, 122, 74, 0.45);
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 8px 24px rgba(176, 122, 74, 0.6);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 480px) {
+            .puzzle-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .letters-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts background -->
+    <div class="hearts-bg"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>💌 Unlock Hidden Love Notes 💌</h1>
+            <p>Answer the questions to reveal special messages for you!</p>
+        </div>
+
+        <!-- Lock mechanism -->
+        <div class="lock-section" id="lock-section">
+            <div class="lock-display">
+                <div class="lock-icon" id="lock-icon">🔒</div>
+                <div class="lock-text" id="lock-text">Question 1 of 3</div>
+                <div class="lock-hint" id="lock-hint">What's the most important thing in our connection?</div>
+            </div>
+
+            <!-- Question 1 -->
+            <div class="puzzle-container" id="puzzle-1">
+                <div class="puzzle-grid">
+                    <div class="puzzle-option" onclick="checkAnswer(1, 'messages')">
+                        <div class="puzzle-icon">💬</div>
+                        <div class="puzzle-text">Sweet Messages</div>
+                    </div>
+                    <div class="puzzle-option" onclick="checkAnswer(1, 'time')">
+                        <div class="puzzle-icon">⏰</div>
+                        <div class="puzzle-text">Quality Time</div>
+                    </div>
+                    <div class="puzzle-option" onclick="checkAnswer(1, 'support')">
+                        <div class="puzzle-icon">🤗</div>
+                        <div class="puzzle-text">Your Support</div>
+                    </div>
+                    <div class="puzzle-option" onclick="checkAnswer(1, 'all')">
+                        <div class="puzzle-icon">💖</div>
+                        <div class="puzzle-text">All of These</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="puzzle-container" id="puzzle-2" style="display: none;">
+                <div class="puzzle-grid">
+                    <div class="puzzle-option" onclick="checkAnswer(2, 'late')">
+                        <div class="puzzle-icon">🌙</div>
+                        <div class="puzzle-text">Late Night Talks</div>
+                    </div>
+                    <div class="puzzle-option" onclick="checkAnswer(2, 'laugh')">
+                        <div class="puzzle-icon">😄</div>
+                        <div class="puzzle-text">Making You Laugh</div>
+                    </div>
+                    <div class="puzzle-option" onclick="checkAnswer(2, 'listen')">
+                        <div class="puzzle-icon">👂</div>
+                        <div class="puzzle-text">When You Listen</div>
+                    </div>
+                    <div class="puzzle-option" onclick="checkAnswer(2, 'every')">
+                        <div class="puzzle-icon">✨</div>
+                        <div class="puzzle-text">Every Moment</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="puzzle-container" id="puzzle-3" style="display: none;">
+                <div class="puzzle-grid">
+                    <div class="puzzle-option" onclick="checkAnswer(3, 'presence')">
+                        <div class="puzzle-icon">🫂</div>
+                        <div class="puzzle-text">Presence</div>
+                    </div>
+                    <div class="puzzle-option" onclick="checkAnswer(3, 'care')">
+                        <div class="puzzle-icon">💝</div>
+                        <div class="puzzle-text">How U Care</div>
+                    </div>
+                    <div class="puzzle-option" onclick="checkAnswer(3, 'understand')">
+                        <div class="puzzle-icon">🤝</div>
+                        <div class="puzzle-text">Understanding</div>
+                    </div>
+                    <div class="puzzle-option" onclick="checkAnswer(3, 'love')">
+                        <div class="puzzle-icon">💕</div>
+                        <div class="puzzle-text">My Love</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress indicator -->
+            <div class="progress-section">
+                <div class="progress-dots">
+                    <div class="progress-dot" id="dot-1"></div>
+                    <div class="progress-dot" id="dot-2"></div>
+                    <div class="progress-dot" id="dot-3"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden messages wall -->
+        <div class="messages-wall" id="messages-wall">
+            <div class="messages-header">
+                <div class="unlock-celebration">🎉</div>
+                <h2>Happy Valentines, Ms. Carla!💕</h2>
+                <p style="color: #8B5E3C; font-size: 1.1rem; font-weight: 700;">
+                    Tap each envelope to read your special notes.🎉
+                </p>
+            </div>
+
+            <div class="letters-grid">
+                <!-- Letter 1 -->
+                <div class="letter-envelope" onclick="openLetter(this)">
+                    <div class="envelope-flap">
+                        <div class="envelope-icon">💌</div>
+                    </div>
+                    <div class="tap-indicator">👆 Tap to open</div>
+                    <div class="letter-content">
+                        <div class="letter-number">Message #1</div>
+                        <div class="letter-title">You're My Favorite Notification</div>
+                        <div class="letter-text">
+                            I really enjoy ur company, zyne. I hope you know that I sometimes have this weird feeling na nacoconfused of what will happen between us, but right now I'll just go with the flow and wait for that time na u'll trust again.
+                        </div>
+                        <div class="letter-signature">- Always, Me 💖</div>
+                    </div>
+                </div>
+
+                <!-- Letter 2 -->
+                <div class="letter-envelope" onclick="openLetter(this)">
+                    <div class="envelope-flap">
+                        <div class="envelope-icon">💌</div>
+                    </div>
+                    <div class="tap-indicator">👆 Tap to open</div>
+                    <div class="letter-content">
+                        <div class="letter-number">Message #2</div>
+                        <div class="letter-title">Smile Moree</div>
+                        <div class="letter-text">
+                            I hope u can smile more. Making you smile isn't just something I want to do—it's something I need to do. It would be great if I'll also be the reason behind your happiness It will  be my greatest achievement so far haha. Keep shining, Zynee! ✨
+                        </div>
+                        <div class="letter-signature">- Your Happiness Keeper 😊</div>
+                    </div>
+                </div>
+
+                <!-- Letter 3 -->
+                <div class="letter-envelope" onclick="openLetter(this)">
+                    <div class="envelope-flap">
+                        <div class="envelope-icon">💌</div>
+                    </div>
+                    <div class="tap-indicator">👆 Tap to open</div>
+                    <div class="letter-content">
+                        <div class="letter-number">Message #3</div>
+                        <div class="letter-title">Focus on Your Goals</div>
+                        <div class="letter-text">
+                            Remember what I told you? na don't pressure yourself too much. You're already doing great, and I believe in you completely. Focus on your goals, take it one step at a time, make the best memories, and know that I'll always be here to cheer you on. You've got this, and I'm so proud of you already! 🌟
+                        </div>
+                        <div class="letter-signature">- Your Biggest Fan 💫</div>
+                    </div>
+                </div>
+
+                <!-- Letter 4 -->
+                <div class="letter-envelope" onclick="openLetter(this)">
+                    <div class="envelope-flap">
+                        <div class="envelope-icon">💌</div>
+                    </div>
+                    <div class="tap-indicator">👆 Tap to open</div>
+                    <div class="letter-content">
+                        <div class="letter-number">Message #4</div>
+                        <div class="letter-title">I'll Always Listen</div>
+                        <div class="letter-text">
+                            I know life can be overwhelming sometimes, but I want you to know that I'm always here to listen. Whether you want to rant, celebrate, share random thoughts, or just talk about your day—I'm here for it all. You'll never a burden, promisee. 💝
+                        </div>
+                        <div class="letter-signature">- Your Listening Ear 👂</div>
+                    </div>
+                </div>
+
+                <!-- Letter 5 -->
+                <div class="letter-envelope" onclick="openLetter(this)">
+                    <div class="envelope-flap">
+                        <div class="envelope-icon">💌</div>
+                    </div>
+                    <div class="tap-indicator">👆 Tap to open</div>
+                    <div class="letter-content">
+                        <div class="letter-number">Message #5</div>
+                        <div class="letter-title">You Make Me Better(hope u know)</div>
+                        <div class="letter-text">
+                            I don't say this much but the way you handle everything life throws at you, you still stay positive(i guess), it's something I cannot do. One example is being independent haha, there're nights u got sick but still manage to take care of urself, alone. Salute boss, Thank you for being such a positive or negative influence in my life haha.💕
+                        </div>
+                        <div class="letter-signature">- Great Job ☺️</div>
+                    </div>
+                </div>
+
+                <!-- Letter 6 -->
+                <div class="letter-envelope" onclick="openLetter(this)">
+                    <div class="envelope-flap">
+                        <div class="envelope-icon">💌</div>
+                    </div>
+                    <div class="tap-indicator">👆 Tap to open</div>
+                    <div class="letter-content">
+                        <div class="letter-number">Message #6</div>
+                        <div class="letter-title">BIG SMILE :)</div>
+                        <div class="letter-text">
+                            I don't wanna say much, but I do want to remind you: you're loved, you're valued, and you're appreciated—not just by me, but by everyone around you. Keep being you, and remember that I'm always here. Here's to more laughs, more conversations, and asaran zyne hahah! 🥂✨
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="back-btn" onclick="window.location.href='yes-enhanced.html'">
+                ← Back to Celebration
+            </button>
+        </div>
+    </div>
+
+    <audio id="bg-music" loop>
+    <source src="v-day_ZYNE/LANY_-_you_(mp3.pm).mp3" type="audio/mpeg">
+</audio>
+
+<button id="music-toggle" onclick="toggleMusic()" title="Toggle music">🔇</button>
+
+<script>
+const bgMusic = document.getElementById('bg-music');
+const musicToggle = document.getElementById('music-toggle');
+
+// Try to auto-play music
+window.addEventListener('load', () => {
+    bgMusic.play().catch(() => {
+        // Autoplay might be blocked; show muted icon
+        musicToggle.textContent = '🔇';
+    });
+});
+
+// Function to toggle music manually
+function toggleMusic() {
+    if (bgMusic.paused) {
+        bgMusic.play();
+        musicToggle.textContent = '🔊';
+    } else {
+        bgMusic.pause();
+        musicToggle.textContent = '🔇';
+    }
+}
+</script>
+
+    <script src="script.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script>
+        let currentQuestion = 1;
+
+        // Check answer
+        function checkAnswer(questionNum, answer) {
+            const option = event.currentTarget;
+            
+            // All answers are correct!
+            option.classList.add('correct');
+            
+            // Play confetti with brown/gold theme
+            confetti({
+                particleCount: 50,
+                spread: 60,
+                origin: { y: 0.6 },
+                colors: ['#C89B6D', '#B07A4A', '#FFD700', '#D6C1A3', '#E8D8C4']
+            });
+
+            // Update progress
+            document.getElementById(`dot-${questionNum}`).classList.add('completed');
+
+            // Wait then move to next question or unlock
+            setTimeout(() => {
+                document.getElementById(`puzzle-${questionNum}`).style.display = 'none';
+                
+                if (questionNum < 3) {
+                    currentQuestion++;
+                    document.getElementById(`puzzle-${currentQuestion}`).style.display = 'block';
+                    updateLockDisplay();
+                } else {
+                    unlockMessages();
+                }
+            }, 1000);
+        }
+
+        // Update lock display
+        function updateLockDisplay() {
+            const hints = [
+                "What's the most important thing in our connection?",
+                "What's your favorite moment with me?",
+                "What do you value most?"
+            ];
+            
+            document.getElementById('lock-text').textContent = `Question ${currentQuestion} of 3`;
+            document.getElementById('lock-hint').textContent = hints[currentQuestion - 1];
+        }
+
+        // Unlock messages
+        function unlockMessages() {
+            // Animate lock opening
+            document.getElementById('lock-icon').textContent = '🔓';
+            document.getElementById('lock-text').textContent = 'Unlocked!';
+            document.getElementById('lock-hint').textContent = 'All messages are now available!';
+
+            // Big confetti with theme colors
+            const duration = 3000;
+            const end = Date.now() + duration;
+            const colors = ['#C89B6D', '#B07A4A', '#FFD700', '#D6C1A3', '#E8D8C4', '#8B5E3C'];
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: colors
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: colors
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+
+            // Hide lock section and show messages
+            setTimeout(() => {
+                document.getElementById('lock-section').style.display = 'none';
+                document.getElementById('messages-wall').classList.add('unlocked');
+            }, 1500);
+        }
+
+        // Open letter
+        function openLetter(envelope) {
+            if (!envelope.classList.contains('opened')) {
+                envelope.classList.add('opened');
+                
+                // Mini confetti with theme colors
+                confetti({
+                    particleCount: 30,
+                    spread: 50,
+                    origin: { 
+                        x: envelope.getBoundingClientRect().left / window.innerWidth + 0.15,
+                        y: envelope.getBoundingClientRect().top / window.innerHeight + 0.1
+                    },
+                    colors: ['#C89B6D', '#B07A4A', '#FFD700', '#D6C1A3']
+                });
+            }
+        }
+
+        // Prevent zoom
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (event) => {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>

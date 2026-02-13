@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>YEYY! 🎉</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div class="hearts-bg"></div>
+
+    <!-- TAP ANYWHERE SCREEN -->
+    <div id="enter-screen">
+        <h1>Tap anywhere for a Valentine message! 🎉</h1>
+    </div>
+
+    <div class="container yes-container">
+        <h1 class="yes-title">Happy Valentines Ms. Carla! 💕</h1>
+        <h4 class="yes-title">🎵 YOU by LANY 🎵</h4>
+
+        <div class="gif-container">
+            <img id="cat-gif" src="https://media.tenor.com/eNHbizSfVb0AAAAj/lovemode-cute.gif" alt="celebrating">
+        </div>
+
+        <p class="yes-message">
+            Hi zynee! Last year was a Spotify playlist right? I told you last time I didn't have time to create a website, so bawi ako hahaha. This is just a simple website ahh, so don't expect too much hahaha now lang nagka free time e hyst. I hope you get to enjoy this day, and I promise to always remind you how loved and valued you are, not just by me, but by everyone around you. Sabi ko nga do not pressure yourself and focus ka lang sa goal! I don't wanna say much, just know na I'll listen always! BIG SMILE :)  
+        </p>
+        
+        <!-- Fun Facts Section -->
+        <div class="fun-section">
+            <h3 class="section-title">💫 Special Moments Together 💫</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="days-together">0</div>
+                    <div class="stat-label">Days of Smiles</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Reasons to Smile</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="messages-shared">9999+</div>
+                    <div class="stat-label">Messages Shared</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Interactive Memory Gallery -->
+        <div class="memory-section">
+            <h3 class="section-title">📸 Tap to Add Memories 📸</h3>
+            <div class="polaroid-gallery">
+                <div class="polaroid" onclick="this.classList.toggle('flipped')">
+                    <div class="polaroid-inner">
+                        <div class="polaroid-front">
+                            <div class="polaroid-img">💝</div>
+                            <p class="polaroid-caption">First Messages</p>
+                        </div>
+                        <div class="polaroid-back">
+                            <p>"The moment everything started"</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="polaroid" onclick="this.classList.toggle('flipped')">
+                    <div class="polaroid-inner">
+                        <div class="polaroid-front">
+                            <div class="polaroid-img">🎵</div>
+                            <p class="polaroid-caption">Music Together</p>
+                        </div>
+                        <div class="polaroid-back">
+                            <p>"Sharing songs and vibes"</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="polaroid" onclick="this.classList.toggle('flipped')">
+                    <div class="polaroid-inner">
+                        <div class="polaroid-front">
+                            <div class="polaroid-img">💬</div>
+                            <p class="polaroid-caption">Late Night Talks</p>
+                        </div>
+                        <div class="polaroid-back">
+                            <p>"Conversations till dawn"</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="polaroid" onclick="this.classList.toggle('flipped')">
+                    <div class="polaroid-inner">
+                        <div class="polaroid-front">
+                            <div class="polaroid-img">🌟</div>
+                            <p class="polaroid-caption">Every Day</p>
+                        </div>
+                        <div class="polaroid-back">
+                            <p>"Making memories together"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Promise Badges -->
+        <div class="promises-section">
+            <h3 class="section-title">✨ My Promises to You ✨</h3>
+            <div class="badges-container">
+                <div class="badge">
+                    <span class="badge-icon">👂</span>
+                    <p>Always Listen</p>
+                </div>
+                <div class="badge">
+                    <span class="badge-icon">💪</span>
+                    <p>Support You</p>
+                </div>
+                <div class="badge">
+                    <span class="badge-icon">😊</span>
+                    <p>Make You Smile</p>
+                </div>
+                <div class="badge">
+                    <span class="badge-icon">🤗</span>
+                    <p>Be There</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Secret button to message reveal -->
+        <div style="text-align: center; margin-top: 30px;">
+            <button class="secret-reveal-btn" onclick="window.location.href='message-reveal-themed.html'" style="
+                background: linear-gradient(135deg, #C89B6D, #B07A4A);
+                color: #fffaf5;
+                border: none;
+                padding: 16px 40px;
+                border-radius: 50px;
+                font-size: 1.1rem;
+                font-weight: 800;
+                cursor: pointer;
+                box-shadow: 0 6px 20px rgba(176, 122, 74, 0.4);
+                transition: all 0.3s ease;
+                animation: glow 2s ease-in-out infinite;
+            " onmouseover="this.style.transform='scale(1.05) translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(176, 122, 74, 0.6)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 6px 20px rgba(176, 122, 74, 0.4)'">
+                🔒 Unlock Hidden Messages 💌
+            </button>
+        </div>
+        
+        <button class="back-btn" onclick="window.location.href='index-enhanced.html'">
+            ← Go Back (Just Kidding!) 😄
+        </button>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="v-day_ZYNE/LANY_-_you_(mp3.pm).mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="music-toggle" onclick="toggleMusic()" title="Toggle music" aria-label="Toggle music">🔇</button>
+
+    <script src="yes-script.js"></script>
+</body>
+</html>
